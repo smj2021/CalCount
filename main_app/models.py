@@ -14,7 +14,11 @@ class Customer(models.Model):
 class Category(models.Model):
     options = (
         ('breakfast', 'breakfast'),
-        (),
-        (),
-        (),
+        ('lunch', 'lunch'),
+        ('dinner', 'dinner'),
+        ('snacks', 'snacks'),
     )
+    name = models.CharField(max_length=50, choices=options)
+    
+    def __str__(self):
+        return self.name
