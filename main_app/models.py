@@ -39,4 +39,7 @@ class Fooditem(models.Model):
     def __str__(self):
         return self.name
     
-    
+# user specific food items
+class UserFooditem(models.Model):
+    customer = models.ManyToManyField(Customer, blank=True)
+    fooditem = models.ManyToManyField(Fooditem)
