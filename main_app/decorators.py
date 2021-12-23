@@ -24,3 +24,8 @@ def allowed_users(allowed_roles=[]):
                 return HttpResponse("<h1>You are not authorized to acces this page, chump!</h1>")
         return wrapper_func
     return decorator
+
+def admin_only(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        group=None
+        
