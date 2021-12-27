@@ -104,3 +104,32 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
+
+def userPage(request):
+    user = request.user
+    cust = user.customer
+    fooditems = Fooditem.objects.filter()
+    myfilter = fooditemFilter(request.GET, queryset=fooditems)
+    fooditems = myfilter.qs
+    total = UserFooditem.objects.all()
+    myfooditems = total.filter(customer=cust)
+    cnt = myfooditems.count()
+    querysetFood = []
+    for food in myfooditems:
+        querysetFood.append(food, fooditem.all())
+    finalFoodItems = []
+    for items in querysetFood:
+        for food_items in items:
+            finalFoodItems.append(food_items)
+    totalCalories = 0
+    for foods in finalFoodItems:
+        totalCalories += foods.calorie
+    CalorieLeft = 2000-totalCalories
+    context = {'CalorieLeft': CalorieLeft,
+               'totalCalories': totalCalories,
+               'cnt': cnt,
+               'foodlist': finalFoodItems,
+               'fooditem': fooditems,
+               'myfilter': myfilter
+               }
+    return render(request, 'user.html', context)
