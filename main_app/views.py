@@ -53,6 +53,7 @@ def fooditem(request):
                }
     return render(request, 'fooditem.html', context)
 
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def createfood(request):
@@ -62,23 +63,37 @@ def createfood(request):
         if form.is_valid():
             form.save()
             return redirect('/')
-    context={'form': form}
+    context = {'form': form}
     return render(request, 'createfooditem.html', context)
+
 
 @unauthorized_user
 def registerPage(request):
-    form=createUserForm()
+    form = createUserForm()
     if request.method == 'POST':
-        form=createUserForm(request.POST)
+        form = createUserForm(request.POST)
         if form.is_valid():
-            user=form.save()
-            username=form.cleaned_data.get(name='username')
-            group=Group.objects.get(name='user')
+            user = form.save()
+            username = form.cleaned_data.get(name='username')
+            group = Group.objects.get(name='user')
             user.groups.add(group)
-            email=form.cleaned_data.get('email')
+            email = form.cleaned_data.get('email')
             Customer.objects.create(user=user, name=username, email=email)
             messages.success(request, 'Account created for ' + username)
             return redirect('login')
-    context={'form': form}
+    context = {'form': form}
     return render(request, 'register.html', context)
 
+
+@unauthorized_user
+def loginPage(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user in not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.info(request, 'username or password is invalid')
+    return render(request, 'login.html')
