@@ -74,7 +74,7 @@ def registerPage(request):
         form = createUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            username = form.cleaned_data.get(name='username')
+            username = form.cleaned_data.get('username')
             group = Group.objects.get(name='user')
             user.groups.add(group)
             email = form.cleaned_data.get('email')
