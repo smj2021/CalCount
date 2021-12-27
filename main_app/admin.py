@@ -7,4 +7,8 @@ class foodAdmin(admin.ModelAdmin):
         model=Fooditem
     list_display=['name']
     list_filter=['name']
-    
+
+admin.site.register(Customer)
+admin.site.register(UserFooditem)
+admin.site.register(Category)
+admin.site.register(Fooditem, foodAdmin)
