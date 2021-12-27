@@ -8,3 +8,9 @@ class fooditemForm(ModelForm):
         fields="__all__"
         
         
+class addUserFooditem(ModelForm):
+    class Meta:
+        model=UserFooditem
+        fields="__all__"
+        
+
