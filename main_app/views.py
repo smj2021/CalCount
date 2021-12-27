@@ -56,7 +56,7 @@ def fooditem(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
-def createfood(request):
+def createfooditem(request):
     form = fooditemForm()
     if request.method == 'POST':
         form = fooditemForm(request.POST)
