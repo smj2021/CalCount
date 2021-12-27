@@ -14,3 +14,7 @@ class addUserFooditem(ModelForm):
         fields="__all__"
         
 
+class createUserForm(UserCreationForm):
+    class Meta:
+        model=User
+        fields=['username', 'email', 'password1', 'password2']
