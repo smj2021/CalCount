@@ -53,4 +53,15 @@ def fooditem(request):
                }
     return render(request, 'fooditem.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def createfood(request):
+    form = fooditemForm()
+    if request.method == 'POST':
+        form = fooditemForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    context={'form': form}
+    return render(request, 'createfooditem.html', context)
 
