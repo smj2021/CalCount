@@ -97,3 +97,10 @@ def loginPage(request):
         else:
             messages.info(request, 'username or password is invalid')
     return render(request, 'login.html')
+
+
+@login_required(login_url='login')
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
+
