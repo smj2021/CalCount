@@ -133,3 +133,16 @@ def userPage(request):
                'myfilter': myfilter
                }
     return render(request, 'user.html', context)
+
+
+def addFooditem(request):
+    user = request.user
+    cust = user.customer
+    if request.method == 'POST':
+        form = addUserFooditem(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    form=addUserFooditem()
+    context={'form': form}
+    return render(request, 'addUserFooditem.html', context)
