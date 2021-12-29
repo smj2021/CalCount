@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 from .decorators import *
 from django.contrib.auth.models import Group
 from .filters import fooditemFilter
-
 # Create your views here.
 
 
@@ -79,7 +78,7 @@ def registerPage(request):
             user.groups.add(group)
             email = form.cleaned_data.get('email')
             Customer.objects.create(user=user, name=username, email=email)
-            messages.success(request, 'Account created for ' + username)
+            messages.success(request, 'Account created for '+username)
             return redirect('login')
     context = {'form': form}
     return render(request, 'register.html', context)
@@ -116,7 +115,7 @@ def userPage(request):
     cnt = myfooditems.count()
     querysetFood = []
     for food in myfooditems:
-        querysetFood.append(food, fooditem.all())
+        querysetFood.append(food.fooditem.all())
     finalFoodItems = []
     for items in querysetFood:
         for food_items in items:
@@ -125,24 +124,19 @@ def userPage(request):
     for foods in finalFoodItems:
         totalCalories += foods.calorie
     CalorieLeft = 2000-totalCalories
-    context = {'CalorieLeft': CalorieLeft,
-               'totalCalories': totalCalories,
-               'cnt': cnt,
-               'foodlist': finalFoodItems,
-               'fooditem': fooditems,
-               'myfilter': myfilter
-               }
+    context = {'CalorieLeft': CalorieLeft, 'totalCalories': totalCalories, 'cnt': cnt,
+               'foodlist': finalFoodItems, 'fooditem': fooditems, 'myfilter': myfilter}
     return render(request, 'user.html', context)
 
 
 def addFooditem(request):
     user = request.user
     cust = user.customer
-    if request.method == 'POST':
+    if request.method == "POST":
         form = addUserFooditem(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/')
-    form=addUserFooditem()
-    context={'form': form}
+    form = addUserFooditem()
+    context = {'form': form}
     return render(request, 'addUserFooditem.html', context)
